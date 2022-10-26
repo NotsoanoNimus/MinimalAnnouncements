@@ -55,11 +55,13 @@ if(app.Environment.IsDevelopment()) {
 
 
 // Add routes for API operations.
+
+// TODO: Add async capability
 var announcementController = new AnnouncementMiniController(ref dbCtx);
 
 app.MapDelete("/announcement/{id:int}", (int id) => announcementController.DeleteAnnouncement(id));
 
-app.MapPost("/announcement", async (Announcement? a) => await announcementController.CreateAnnouncement(a));
+app.MapPost("/announcement", (Announcement? a) => announcementController.CreateAnnouncement(a));
 
 app.MapPut("/announcement/{id:int}", (int id, Announcement a) => announcementController.UpdateAnnouncement(id, a));
 

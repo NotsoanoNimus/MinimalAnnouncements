@@ -66,10 +66,12 @@ public sealed class AnnouncementMiniController {
     public AnnouncementMiniController(ref AnnouncementDb ctx) => this._ctx = ctx;
 
 
-    public async Task<Announcement?> CreateAnnouncement(Announcement? announcement) {
+    public Announcement CreateAnnouncement(Announcement announcement) {
         // Check authentication and authorization (use decorator?).
 
-        
+        // TODO: Async and exception handling.
+        this._ctx.Announcements.Add(announcement);
+        this._ctx.SaveChanges();
 
         return announcement;
     }

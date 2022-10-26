@@ -50,7 +50,7 @@ public sealed class PaginatedResponse<T> {
             // Based on whether there is a next page, get the upper bound of the slice.
             int upperBound = this.Next
                 ? (int)((page + 1) * itemsPerPage)
-                : (responseData.Length - 1)
+                : (responseData.Length)
             ;
 
             // Slice the data for the page.
@@ -63,7 +63,7 @@ public sealed class PaginatedResponse<T> {
                 return;
             }
 
-
+            this.Data = responseData;
         }
 
         // If execution reaches this section, there are no errors.
