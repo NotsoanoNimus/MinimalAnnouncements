@@ -81,20 +81,26 @@ public sealed class AnnouncementMiniController {
     public ApiResponse<Announcement> GetAnnouncements(uint? pageNumber, uint? resultsPerPage)
         => (new PaginatedResponse<Announcement>(this._ctx.Announcements.ToArray(), pageNumber, resultsPerPage)).GetResponse();
 
-    public async Task<Announcement?> GetAnnouncement(int id)
-        => (id < 0) ? null : await this._ctx.Announcements.FirstAsync(x => x.Id == id);
+    public async Task<Announcement?> GetAnnouncement(int id) {
+        try { 
+            return (id < 0) ? null : ((await this._ctx.Announcements.FirstAsync(x => x.Id == id)) ?? null);
+        } catch { return null; }
+    }
 
     public Announcement? UpdateAnnouncement(int id, Announcement a) {
         return null;
     }
 
-    public Announcement? DeleteAnnouncement(int id) {
+    public async Task<Announcement?> DeleteAnnouncement(int id) {
         // Check authentication and authorization (use decorator?).
 
-        var ann = this.GetAnnouncement(id);
+        var ann = await this.GetAnnouncement(id);
 
-        if(ann != null) {
+        if ( ann != null ) {
+            this._ctx.Remove(ann);
+            await this._ctx.SaveChangesAsync();
 
+            return ann;
         }
 
         return null;

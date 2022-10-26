@@ -59,7 +59,7 @@ if(app.Environment.IsDevelopment()) {
 // TODO: Add async capability
 var announcementController = new AnnouncementMiniController(ref dbCtx);
 
-app.MapDelete("/announcement/{id:int}", (int id) => announcementController.DeleteAnnouncement(id));
+app.MapDelete("/announcement/{id:int}", async (int id) => await announcementController.DeleteAnnouncement(id));
 
 app.MapPost("/announcement", (Announcement? a) => announcementController.CreateAnnouncement(a));
 
