@@ -63,7 +63,7 @@ app.MapDelete("/announcement/{id:int}", async (int id) => await announcementCont
 
 app.MapPost("/announcement", (Announcement? a) => announcementController.CreateAnnouncement(a));
 
-app.MapPut("/announcement/{id:int}", (int id, Announcement a) => announcementController.UpdateAnnouncement(id, a));
+app.MapPut("/announcement/{id:int}", async (int id, Announcement a) => await announcementController.UpdateAnnouncement(id, a));
 
 app.MapGet("/announcement/{id:int}", (int id, uint? pageNumber, uint? resultsPerPage) => announcementController.GetAnnouncement(id));
 

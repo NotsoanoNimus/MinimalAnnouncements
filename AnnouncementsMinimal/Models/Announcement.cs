@@ -22,7 +22,7 @@ public sealed record Announcement(
     [Required, MaxLength(256)] string Subject,
     [Required] string Message
 ) {
-    [Key] public int Id { get; init; }
+    [Key] public int Id { get; set; }
 };
 
 
@@ -87,7 +87,19 @@ public sealed class AnnouncementMiniController {
         } catch { return null; }
     }
 
-    public Announcement? UpdateAnnouncement(int id, Announcement a) {
+    public async Task<Announcement?> UpdateAnnouncement(int id, Announcement a) {
+        // Check authentication and authorization (use decorator?).
+
+        var ann = await this.GetAnnouncement(id);
+
+        if ( ann != null ) {
+            a.Id = ann.Id;
+            this._ctx.Entry(ann).CurrentValues.SetValues(a);
+            await this._ctx.SaveChangesAsync();
+
+            return ann;
+        }
+
         return null;
     }
 
